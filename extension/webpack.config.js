@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = (env, options) => ({
   entry: {
     video: './src/video.js',
-    background: './src/background.js',
+    background: './src/background.ts',
     popup: './src/popup.js',
     'anki-ui': './src/anki-ui.js',
     'video-name-ui': './src/video-name-ui.js'
@@ -14,8 +14,17 @@ module.exports = (env, options) => ({
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
   },
+  resolve: { extensions: [".ts", ".tsx", ".js"] },
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        loader: "ts-loader"
+      },
+      {
+        test: /\.js$/,
+        loader: "source-map-loader"
+      },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
