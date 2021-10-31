@@ -15,12 +15,17 @@ import AsbplayerToVideoCommandForwardingHandler from './handlers/asbplayer/Asbpl
 import AsbplayerV2ToVideoCommandForwardingHandler from './handlers/asbplayerv2/AsbplayerV2ToVideoCommandForwardingHandler';
 import AsbplayerHeartbeatHandler from './handlers/asbplayerv2/AsbplayerHeartbeatHandler';
 import RefreshSettingsHandler from './handlers/popup/RefreshSettingsHandler';
+import { CommandHandler } from './handlers/CommandHandler';
+import { Command, Message } from '@project/common';
+import CommandSender from './services/CommandSender';
 
 const settings = new Settings();
 const tabRegistry = new TabRegistry(settings);
 const audioRecorder = new AudioRecorder();
 const imageCapturer = new ImageCapturer(settings);
-const handlers = [
+const commandSender = new CommandSender();
+
+const handlers: CommandHandler[] = [
     new VideoHeartbeatHandler(tabRegistry),
     new RecordMediaHandler(audioRecorder, imageCapturer),
     new RerecordMediaHandler(audioRecorder),
@@ -30,14 +35,14 @@ const handlers = [
     new SyncHandler(tabRegistry),
     new HttpPostHandler(),
     new VideoToAsbplayerCommandForwardingHandler(),
-    new AsbplayerToVideoCommandForwardingHandler(),
+    new AsbplayerToVideoCommandForwardingHandler(commandSender),
     new AsbplayerHeartbeatHandler(tabRegistry),
     new AsbplayerV2ToVideoCommandForwardingHandler(),
     new RefreshSettingsHandler(tabRegistry)
 ];
 
 chrome.runtime.onMessage.addListener(
-    (request, sender, sendResponse) => {
+    (request: Command<Message>, sender, sendResponse) => {
         for (const handler of handlers) {
             if (handler.sender === request.sender) {
                 if (handler.command === null

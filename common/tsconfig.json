@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+      "outDir": "./dist",
+      "allowJs": true,
+      "target": "es5",
+      "composite": true,
+      "rootDir": "./src"
+    },
+    "exclude": ["./dist/**/*"],
+    "include": ["./src/**/*"]
+  }
+  
