@@ -17,13 +17,11 @@ import AsbplayerHeartbeatHandler from './handlers/asbplayerv2/AsbplayerHeartbeat
 import RefreshSettingsHandler from './handlers/popup/RefreshSettingsHandler';
 import { CommandHandler } from './handlers/CommandHandler';
 import { Command, Message } from '@project/common';
-import CommandSender from './services/CommandSender';
 
 const settings = new Settings();
 const tabRegistry = new TabRegistry(settings);
 const audioRecorder = new AudioRecorder();
 const imageCapturer = new ImageCapturer(settings);
-const commandSender = new CommandSender();
 
 const handlers: CommandHandler[] = [
     new VideoHeartbeatHandler(tabRegistry),
@@ -35,7 +33,7 @@ const handlers: CommandHandler[] = [
     new SyncHandler(tabRegistry),
     new HttpPostHandler(),
     new VideoToAsbplayerCommandForwardingHandler(),
-    new AsbplayerToVideoCommandForwardingHandler(commandSender),
+    new AsbplayerToVideoCommandForwardingHandler(),
     new AsbplayerHeartbeatHandler(tabRegistry),
     new AsbplayerV2ToVideoCommandForwardingHandler(),
     new RefreshSettingsHandler(tabRegistry)

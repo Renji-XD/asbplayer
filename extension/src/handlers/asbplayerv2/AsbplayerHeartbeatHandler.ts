@@ -1,4 +1,4 @@
-import { Command, Message } from '@project/common';
+import { AsbplayerHeartbeatMessage, Command, Message } from '@project/common';
 import TabRegistry from '../../services/TabRegistry';
 
 export default class AsbplayerHeartbeatHandler {
@@ -17,11 +17,15 @@ export default class AsbplayerHeartbeatHandler {
         return 'heartbeat';
     }
 
-    handle(request: Command<Message>, sender: chrome.runtime.MessageSender) {
+    handle(command: Command<Message>, sender: chrome.runtime.MessageSender) {
+        const message = command.message as AsbplayerHeartbeatMessage;
+
         this.tabRegistry.asbplayers[sender.tab.id] = {
             tab: sender.tab,
-            id: request.message.id,
+            id: message.id,
             timestamp: Date.now()
         };
+
+        return true;
     }
 }

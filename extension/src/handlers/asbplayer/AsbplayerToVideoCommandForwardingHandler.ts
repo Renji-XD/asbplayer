@@ -1,13 +1,6 @@
-import { Command, Message } from '@project/common';
-import CommandSender, { ExtensionToVideoCommand } from '../../services/CommandSender';
+import { AsbPlayerToVideoCommand, Command, ExtensionToVideoCommand, Message } from '@project/common';
 
 export default class AsbplayerToVideoCommandForwardingHandler {
-
-    private readonly commandSender: CommandSender;
-
-    constructor(commandSender: CommandSender) {
-        this.commandSender = commandSender;
-    }
 
     get sender() {
         return 'asbplayer';
@@ -18,7 +11,14 @@ export default class AsbplayerToVideoCommandForwardingHandler {
     }
 
     handle(command: Command<Message>, sender: chrome.runtime.MessageSender) {
-        this.commandSender.sendToVideo(command as ExtensionToVideoCommand<Message>);
+        const asbplayerToExtensionCommand = command as AsbPlayerToVideoCommand<Message>;
+
+        chrome.tabs.sendMessage(asbplayerToExtensionCommand.tabId, {
+            sender: 'asbplayer-extension-to-video',
+            message: asbplayerToExtensionCommand.message,
+            src: asbplayerToExtensionCommand.src
+        });
+
         return true;
     }
 }
