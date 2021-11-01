@@ -24,6 +24,6 @@ export default class AsbplayerToVideoCommandForwardingHandler {
             });
         }
 
-        return true;
+        return false;
     }
 }

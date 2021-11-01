@@ -26,6 +26,6 @@ export default class AsbplayerHeartbeatHandler {
             timestamp: Date.now()
         };
 
-        return true;
+        return false;
     }
 }

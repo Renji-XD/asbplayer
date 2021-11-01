@@ -19,6 +19,6 @@ export default class AsbplayerToVideoCommandForwardingHandler {
             src: asbplayerToExtensionCommand.src
         });
 
-        return true;
+        return false;
     }
 }
